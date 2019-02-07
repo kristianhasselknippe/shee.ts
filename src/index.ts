@@ -1,11 +1,24 @@
-interface Reference {}
-
 interface Formula {}
 
-type CellValue = number | string | Reference | Formula
+type CellValue = number | string
+type CellReference = Cell
+type CellContent = CellValue | CellReference | Formula
 
 class Cell {
-	constructor(readonly value: CellValue) {}
+	constructor(readonly content: CellContent) {}
+
+	getValue(): CellValue {
+		console.log("This content: ", this.content)
+		if (typeof this.content === 'number' || typeof this.content === 'string') {
+			console.log("    returning: " + this.content)
+			return this.content
+		} else if (this.content instanceof Cell) {
+			return this.content.getValue()
+		} else {
+			//Evaluate formula
+			throw new Error("Formulas not yet supported")
+		}
+	}
 }
 
 export class Table {
@@ -19,11 +32,24 @@ export class Table {
 		return y * this.height + x
 	}
 
-	setCell(x: number, y: number, value: CellValue) {
+	reference(x: number, y: number): CellReference {
+		return this.cells[this.index(x,y)]
+	}
+
+	setCell(x: number, y: number, value: CellContent) {
 		this.cells[this.index(x,y)] = new Cell(value)
 	}
 
+	getCell(x: number, y: number) {
+		return this.cells[this.index(x,y)]
+	}
+
 	getCellValue(x: number, y: number) {
-		return this.cells[this.index(x,y)].value
+		return this.getCell(x,y).getValue()
+
+	}
+
+	getCellContent(x: number, y: number) {
+		return this.getCell(x,y).content
 	}
 }
