@@ -1,14 +1,16 @@
 {
-  "name": "shee-ts",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "rxjs": "^6.4.0"
-  }
+	"name": "shee-ts",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./dist/index.js",
+	"scripts": {
+		"test": "jest ."
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@types/jest": "^24.0.0",
+		"rxjs": "^6.4.0",
+		"ts-jest": "^23.10.5"
+	}
 }
