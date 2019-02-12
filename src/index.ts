@@ -78,9 +78,3 @@ export class Table {
 		return this.getCell(x,y).content
 	}
 }
-
-export class TableFunction {
-	constructor(readonly forumla: Formula) {
-		
-	}
-}
