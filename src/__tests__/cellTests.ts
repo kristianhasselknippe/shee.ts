@@ -52,3 +52,21 @@ test("Formula: simple binary expressions 20/5", () => {
 	)
 	expect(table.getCellValue(0,0)).toBe(4)
 })
+
+test("Formula: simple binary expressions with ref to other cells", () => {
+	const table = new Shee.Table("Salaries", 1, 3)
+	table.setCell(0,0,10)
+	table.setCell(0,1,5)
+	table.setCell(
+		0,
+		2,
+		new Formula(
+			new BinaryExpression(
+				table.reference(0,0),
+				"*",
+				table.reference(0,1)
+			)
+		)
+	)
+	expect(table.getCellValue(0,2)).toBe(50)
+})

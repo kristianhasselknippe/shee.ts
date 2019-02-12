@@ -16,8 +16,18 @@ type CellReference = Cell
 
 type CellContent = CellValue | CellReference | Formula
 
-class Cell {
-	constructor(readonly content: CellContent) {}
+class Cell extends Expr.Expression {
+	constructor(readonly content: CellContent) {
+		super()
+	}
+
+	evaluate(): number {
+		const ret = this.getValue()
+		if (typeof ret === "string") {
+			throw "Tried to evaluate cell as expression, but it returned string. This is currently not supported"
+		}
+		return ret
+	}
 
 	getValue(): CellValue {
 		if (typeof this.content === 'number' || typeof this.content === 'string') {
@@ -44,7 +54,7 @@ export class Table {
 	}
 
 	private index(x: number, y: number) {
-		return y * this.height + x
+		return (y * this.width) + x
 	}
 
 	reference(x: number, y: number): CellReference {
