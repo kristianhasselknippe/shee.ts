@@ -70,3 +70,45 @@ test("Formula: simple binary expressions with ref to other cells", () => {
 	)
 	expect(table.getCellValue(0,2)).toBe(50)
 })
+
+test("Formula: binary expression, multiple layers", () => {
+	const table = new Shee.Table("Salaries", 1, 7)
+	table.setCell(0,0,4)
+	table.setCell(0,1,10)
+	table.setCell(0,2,120)
+	table.setCell(0,3,2)
+	table.setCell(
+		0,
+		4,
+		new Formula(
+			new BinaryExpression(
+				table.reference(0,0),
+				"*",
+				table.reference(0,1),
+			)
+		)
+	)
+	table.setCell(
+		0,
+		5,
+		new Formula(
+			new BinaryExpression(
+				table.reference(0,2),
+				"/",
+				table.reference(0,3),
+			)
+		)
+	)
+	table.setCell(
+		0,
+		6,
+		new Formula(
+			new BinaryExpression(
+				table.reference(0,4),
+				"+",
+				table.reference(0,5),
+			)
+		)
+	)
+	expect(table.getCellValue(0,6)).toBe(100)
+})
