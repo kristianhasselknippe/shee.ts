@@ -112,3 +112,19 @@ test("Formula: binary expression, multiple layers", () => {
 	)
 	expect(table.getCellValue(0,6)).toBe(100)
 })
+
+test("Formula: Multiple tables", () => {
+	const t1 = new Shee.Table("T1", 1, 1)
+	const t2 = new Shee.Table("T2", 1, 1)
+	const t3 = new Shee.Table("T3", 1, 1)
+	t1.setCell(0,0,123)
+	t2.setCell(0,0,321)
+	t3.setCell(0,0, new Formula(
+		new BinaryExpression(
+			t1.reference(0,0),
+			"*",
+			t2.reference(0,0)
+		)
+	))
+	expect(t3.getCellValue(0,0)).toBe(39483)
+})
