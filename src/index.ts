@@ -1,22 +1,33 @@
-interface Formula {}
+import * as Expr from './expression'
 
 type CellValue = number | string
+
+export class Formula {
+	constructor(private expr: Expr.Expression) {
+		
+	}
+
+	evaluate(): CellValue {
+		return this.expr.evaluate()
+	}
+}
+
 type CellReference = Cell
+
 type CellContent = CellValue | CellReference | Formula
 
 class Cell {
 	constructor(readonly content: CellContent) {}
 
 	getValue(): CellValue {
-		console.log("This content: ", this.content)
 		if (typeof this.content === 'number' || typeof this.content === 'string') {
-			console.log("    returning: " + this.content)
 			return this.content
 		} else if (this.content instanceof Cell) {
 			return this.content.getValue()
+		} else if (this.content instanceof Formula) {
+			return this.content.evaluate()
 		} else {
-			//Evaluate formula
-			throw new Error("Formulas not yet supported")
+			throw "Tried to get value of unknown content type"
 		}
 	}
 }
@@ -24,7 +35,11 @@ class Cell {
 export class Table {
 	private cells: Cell[] = []
 
-	constructor(readonly name: string, readonly width: number, readonly height: number) {
+	constructor(
+		private name: string,
+		private width: number,
+		private height: number
+	) {
 
 	}
 
@@ -51,5 +66,11 @@ export class Table {
 
 	getCellContent(x: number, y: number) {
 		return this.getCell(x,y).content
+	}
+}
+
+export class TableFunction {
+	constructor(readonly forumla: Formula) {
+		
 	}
 }

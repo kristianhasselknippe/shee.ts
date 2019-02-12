@@ -1,4 +1,6 @@
 import * as Shee from "../index"
+import { BinaryExpression, Literal } from "../expression";
+import { Formula } from "../index";
 
 test("Basic cell assignment", () => {
 	const table = new Shee.Table("Salaries", 1,1)
@@ -17,4 +19,36 @@ test("Basic cell references", () => {
 	expect(table.getCellValue(1,0)).toBe(10)
 	expect(table.getCellValue(0,1)).toBe("Anders")
 	expect(table.getCellValue(1,1)).toBe(10)
+})
+
+test("Formula: simple binary expressions 5+10", () => {
+	const table = new Shee.Table("Salaries", 1, 1)
+	table.setCell(
+		0,
+		0,
+		new Formula(
+			new BinaryExpression(
+				new Literal(5),
+				"+",
+				new Literal(10)
+			)
+		)
+	)
+	expect(table.getCellValue(0,0)).toBe(15)
+})
+
+test("Formula: simple binary expressions 20/5", () => {
+	const table = new Shee.Table("Salaries", 1, 1)
+	table.setCell(
+		0,
+		0,
+		new Formula(
+			new BinaryExpression(
+				new Literal(20),
+				"/",
+				new Literal(5)
+			)
+		)
+	)
+	expect(table.getCellValue(0,0)).toBe(4)
 })
