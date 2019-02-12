@@ -1,6 +1,7 @@
 import * as Shee from "../index"
 import { BinaryExpression, Literal } from "../expression";
 import { Formula } from "../index";
+import { renderTable } from "../consoleRenderer";
 
 test("Basic cell assignment", () => {
 	const table = new Shee.Table("Salaries", 1,1)
@@ -127,4 +128,24 @@ test("Formula: Multiple tables", () => {
 		)
 	))
 	expect(t3.getCellValue(0,0)).toBe(39483)
+})
+
+test("Command line rendering", () => {
+	const t = new Shee.Table("Table one", 4, 3)
+	t.setCell(0,0,0)
+	t.setCell(1,0,10)
+	t.setCell(2,0,20)
+	t.setCell(3,0,30)
+
+	t.setCell(0,1,1)
+	t.setCell(1,1,11)
+	t.setCell(2,1,21)
+	t.setCell(3,1,31)
+
+	t.setCell(0,2,2)
+	t.setCell(1,2,12)
+	t.setCell(2,2,22)
+	t.setCell(3,2,32)
+
+	console.log(renderTable(t))
 })
