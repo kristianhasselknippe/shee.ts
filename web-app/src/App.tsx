@@ -36,7 +36,8 @@ class App extends React.Component<any, AppState> {
     }
   };
 
-  public render() {
+	public render() {
+		console.log("Rendering ", this.state)
     return (
       <div className="App">
         <header className="App-header">
@@ -46,6 +47,7 @@ class App extends React.Component<any, AppState> {
         <p className="App-intro">
           To get heisann <code>Foobar</code> and save to reload.
         </p>
+		{this.renderWorkspace()}
       </div>
     );
   }

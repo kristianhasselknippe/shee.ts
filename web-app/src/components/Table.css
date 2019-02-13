@@ -1,0 +1,11 @@
+.Table th {
+	border: 1px solid black;
+}
+
+th p {
+	margin: 2pt 10pt;
+}
+
+.Table {
+	border: 1px solid black;
+}
