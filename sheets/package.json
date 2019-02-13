@@ -1,10 +1,11 @@
 {
-	"name": "shee-ts",
+	"name": "sheets",
 	"version": "1.0.0",
 	"description": "",
-	"main": "./dist/index.js",
+	"main": "./lib/index.js",
+	"types": "./lib/index.d.ts",
 	"scripts": {
-		"test": "jest ./dist"a
+		"test": "jest ./lib"
 	},
 	"author": "",
 	"license": "ISC",
