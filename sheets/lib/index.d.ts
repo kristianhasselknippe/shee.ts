@@ -34,4 +34,9 @@ export declare class DerivedTable extends Table {
     constructor(name: string, func: (...items: (Cell | undefined)[]) => Cell, ...tables: Table[]);
     getCell(x: number, y: number): Cell;
 }
+export declare class Workspace {
+    private tables;
+    addTable(table: Table): void;
+    getTables(): Table[];
+}
 //# sourceMappingURL=index.d.ts.map

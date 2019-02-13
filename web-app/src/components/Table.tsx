@@ -44,15 +44,13 @@ export class SheetsTable extends React.Component<TableProps> {
 			</table>
 		)
 
-		console.log("Ret", retTable)
-
 		return retTable
 	}
 
 	render() {
 		const table = this.props.table
 		return (
-			<div>
+			<div className="Table">
 				<p>{table.name}</p>
 				{this.renderTable()}
 			</div>

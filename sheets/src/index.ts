@@ -108,20 +108,14 @@ export class DerivedTable extends Table {
 	}
 }
 
-	const t = new Table("Table one", 4, 3)
-	t.setCell(0,0,0)
-	t.setCell(1,0,100000)
-	t.setCell(2,0,20)
-	t.setCell(3,0,30)
+export class Workspace {
+	private tables: Table[] = []
 
-	t.setCell(0,1,1)
-	t.setCell(1,1,11)
-	t.setCell(2,1,21123)
-	t.setCell(3,1,31)
+	addTable(table: Table) {
+		this.tables.push(table)
+	}
 
-	t.setCell(0,2,2)
-	t.setCell(1,2,12)
-	t.setCell(2,2,22)
-	t.setCell(3,2,32)
-
-	console.log(renderTable(t))
+	getTables() {
+		return this.tables
+	}
+}

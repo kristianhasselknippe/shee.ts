@@ -2,11 +2,11 @@ import * as React from "react";
 import "./App.css";
 
 import logo from "./logo.svg";
-import { Table } from "sheets";
-import { SheetsTable } from "./components/Table";
+import { Table, Workspace, Cell } from "sheets";
+import { SheetsWorkspace } from "./components/Workspace";
 
 interface AppState {
-  table: Table;
+  workspace: Workspace;
 }
 
 class App extends React.Component<any, AppState> {
@@ -23,21 +23,34 @@ class App extends React.Component<any, AppState> {
     table.setCell(0, 2, 7);
     table.setCell(1, 2, 8);
     table.setCell(2, 2, 9);
+
+    const derived = table.derive("Derived table", item => {
+      if (item) {
+        return new Cell((item.getValue() as number) * 2);
+      } else {
+        throw "Cell was undefined";
+      }
+    });
+
+    const workspace = new Workspace();
+    workspace.addTable(table);
+    workspace.addTable(derived);
+
     this.setState({
-      table
+      workspace
     });
   }
 
   renderWorkspace = () => {
     if (this.state) {
-      return <SheetsTable table={this.state.table} />;
+      return <SheetsWorkspace workspace={this.state.workspace} />;
     } else {
       return null;
     }
   };
 
-	public render() {
-		console.log("Rendering ", this.state)
+  public render() {
+    console.log("Rendering ", this.state);
     return (
       <div className="App">
         <header className="App-header">
@@ -47,7 +60,7 @@ class App extends React.Component<any, AppState> {
         <p className="App-intro">
           To get heisann <code>Foobar</code> and save to reload.
         </p>
-		{this.renderWorkspace()}
+        {this.renderWorkspace()}
       </div>
     );
   }
