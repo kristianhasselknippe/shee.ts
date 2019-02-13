@@ -169,3 +169,22 @@ test("Simple Derived Table test", () => {
 	expect(derived.getCellValue(0,1)).toBe(6)
 	expect(derived.getCellValue(1,1)).toBe(8)
 })
+
+test("Simple Derived Table test two sources", () => {
+	const table1 = new Shee.Table("T1", 1,2)
+	table1.setCell(0,0,1)
+	table1.setCell(1,0,2)
+	const table2 = new Shee.Table("T2", 1,2)
+	table2.setCell(0,0,5)
+	table2.setCell(1,0,9)
+
+	const derived = new Shee.DerivedTable("Add them", (a, b) => {
+		return new Shee.Cell(
+			//TODO: Clean up API
+			(a!.getValue() as any) + (b!.getValue() as any)
+		)
+	}, table1, table2)
+
+	expect(derived.getCellValue(0,0)).toBe(6)
+	expect(derived.getCellValue(0,1)).toBe(11)
+})
