@@ -1,11 +1,11 @@
 import * as Expr from './expression'
 import { renderTable } from './consoleRenderer';
 
-type CellValue = number | string
+export type CellValue = number | string
 
 export class Formula {
 	constructor(private expr: Expr.Expression) {
-		
+
 	}
 
 	evaluate(): CellValue {
@@ -13,11 +13,11 @@ export class Formula {
 	}
 }
 
-type CellReference = Cell
+export type CellReference = Cell
 
-type CellContent = CellValue | CellReference | Formula
+export type CellContent = CellValue | CellReference | Formula
 
-class Cell extends Expr.Expression {
+export class Cell extends Expr.Expression {
 	constructor(readonly content: CellContent) {
 		super()
 	}
@@ -58,7 +58,7 @@ export class Table {
 		return this.cells
 	}
 
-	private index(x: number, y: number) {
+	protected index(x: number, y: number) {
 		return (y * this.width) + x
 	}
 
@@ -81,6 +81,30 @@ export class Table {
 
 	getCellContent(x: number, y: number) {
 		return this.getCell(x,y).content
+	}
+
+	derive(name: string, func: (...items: (Cell | undefined)[]) => Cell) {
+		return new DerivedTable(name, func, this)
+	}
+}
+
+export class DerivedTable extends Table {
+	tables: Table[]
+
+	constructor(
+		name: string,
+		private func: (...items: (Cell | undefined)[]) => Cell,
+		...tables: Table[]) {
+		super(
+			name,
+			tables.reduce((prev, curr) => Math.max(prev, curr.width), 0),
+			tables.reduce((prev, curr) => Math.max(prev, curr.height), 0)
+		)
+		this.tables = tables
+	}
+
+	getCell(x: number, y: number) {
+		return this.func(...this.tables.map(c => c.getCell(x,y)))
 	}
 }
 

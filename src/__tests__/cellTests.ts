@@ -149,3 +149,23 @@ test("Command line rendering", () => {
 
 	console.log(renderTable(t))
 })
+
+test("Simple Derived Table test", () => {
+	const table = new Shee.Table("T1", 2,2)
+	table.setCell(0,0,1)
+	table.setCell(1,0,2)
+	table.setCell(0,1,3)
+	table.setCell(1,1,4)
+
+	const derived = table.derive("Times two table", a => {
+		return new Shee.Cell(
+			//TODO: Clean up API
+			(a!.getValue() as any) * 2
+		)
+	})
+
+	expect(derived.getCellValue(0,0)).toBe(2)
+	expect(derived.getCellValue(1,0)).toBe(4)
+	expect(derived.getCellValue(0,1)).toBe(6)
+	expect(derived.getCellValue(1,1)).toBe(8)
+})
