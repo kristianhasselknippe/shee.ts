@@ -7,7 +7,18 @@ interface WorkspaceProps {
 	workspace: Workspace
 }
 
-export class SheetsWorkspace extends React.Component<WorkspaceProps> {
+interface WorkspaceState {
+	mouseEvent: MouseEvent | null
+}
+
+export class SheetsWorkspace extends React.Component<WorkspaceProps, WorkspaceState> {
+
+	constructor(props: WorkspaceProps) {
+		super(props)
+		this.state = {
+			mouseEvent: null
+		}
+	}
 
 	updateCanvas = () => {
 		const canvas = this.refs.canvas as HTMLCanvasElement
@@ -23,13 +34,34 @@ export class SheetsWorkspace extends React.Component<WorkspaceProps> {
 						x: i * 450,
 						y: 0
 					}
-				})
+				}, this.state.mouseEvent)
 				i++
 			}
 		}
 	}
 
+	mouseDown = (e: MouseEvent) => {
+		console.log('Mouse down: ', e)
+		this.setState({
+			mouseEvent: e
+		})
+	}
+
+	mouseUp = (e: MouseEvent) => {
+		console.log('Mouse up')
+		this.setState({
+			mouseEvent: null
+		})
+	}
+
 	componentDidMount() {
+		const canvas = this.refs.canvas as HTMLCanvasElement
+		canvas.addEventListener('mousedown', e => {
+			this.mouseDown(e)
+		})
+		canvas.addEventListener('mouseup', e => {
+			this.mouseUp(e)
+		})
 		this.updateCanvas()
 	}
 

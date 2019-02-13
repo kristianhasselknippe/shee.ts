@@ -12,7 +12,7 @@ interface TableProps {
 	}
 }
 
-export function renderTable(props: TableProps) {
+export function renderTable(props: TableProps, mouse: MouseEvent | null) {
 	const ctx = props.renderingContext
 	const fontSize = 30
 	ctx.font = `${fontSize}px Arial`
