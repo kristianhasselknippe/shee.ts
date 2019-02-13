@@ -89,7 +89,7 @@ export class Table {
 }
 
 export class DerivedTable extends Table {
-	tables: Table[]
+	originTables: Table[]
 
 	constructor(
 		name: string,
@@ -100,11 +100,11 @@ export class DerivedTable extends Table {
 			tables.reduce((prev, curr) => Math.max(prev, curr.width), 0),
 			tables.reduce((prev, curr) => Math.max(prev, curr.height), 0)
 		)
-		this.tables = tables
+		this.originTables = tables
 	}
 
 	getCell(x: number, y: number) {
-		return this.func(...this.tables.map(c => c.getCell(x,y)))
+		return this.func(...this.originTables.map(c => c.getCell(x,y)))
 	}
 }
 

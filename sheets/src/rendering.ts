@@ -1,6 +1,13 @@
 import { Table } from ".";
+import { Workspace, CellValue, DerivedTable } from "./workspace";
 
-export function createRenderingInfo(table: Table) {
+interface TableRenderingInfo {
+	table: Table
+	cellWidths: number[]
+	cellValues: CellValue[]
+}
+
+export function createRenderingInfoForTable(table: Table): TableRenderingInfo {
 	const cellWidths = []
 	const cellValues = []
 	const cells = table.getCells()
@@ -17,7 +24,39 @@ export function createRenderingInfo(table: Table) {
 		cellWidths[x] = largestCellWidth
 	}
 	return {
+		table,
 		cellWidths,
 		cellValues
+	}
+}
+
+interface TableEdge {
+	from: Table
+	to: Table
+}
+
+interface WorkspaceRenderingInfo {
+	tables: TableRenderingInfo[]
+	edges: TableEdge[]
+}
+
+export function createRenderingInfoForWorkspace(workspace: Workspace): WorkspaceRenderingInfo {
+	const tables = workspace.getTables()
+	const tableInfos = []
+	const edges: TableEdge[] = []
+	for (const table of tables) {
+		if (table instanceof DerivedTable) {
+			for (const originTable of table.originTables) {
+				edges.push({
+					from: originTable,
+					to: table
+				})
+			}
+		}
+		tableInfos.push(createRenderingInfoForTable(table))
+	}
+	return {
+		tables: tableInfos,
+		edges
 	}
 }

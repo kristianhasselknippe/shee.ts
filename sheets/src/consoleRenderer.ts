@@ -1,5 +1,5 @@
 import { Table } from ".";
-import { createRenderingInfo } from "./rendering";
+import { createRenderingInfoForTable } from "./rendering";
 
 function dup(n: number, s: string) {
 	let ret = ""
@@ -14,7 +14,7 @@ function spaces(n: number) {
 }
 
 export function renderTable(table: Table) {
-	const { cellWidths, cellValues } = createRenderingInfo(table)
+	const { cellWidths, cellValues } = createRenderingInfoForTable(table)
 	let ret = `Table: ${table.name}\n`
 	ret += "+"
 	for (let x = 0; x < table.width; x++) {

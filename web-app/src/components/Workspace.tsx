@@ -24,6 +24,7 @@ export class SheetsWorkspace extends React.Component<WorkspaceProps, WorkspaceSt
 		const canvas = this.refs.canvas as HTMLCanvasElement
 		const ctx = canvas.getContext("2d")
 		if (ctx) {
+			ctx.clearRect(0,0, canvas.width, canvas.height)
 			let i = 0
 			for (const table of this.props.workspace.getTables()){
 				renderTable({
